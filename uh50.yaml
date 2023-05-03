@@ -1,14 +1,14 @@
 esphome:
-  name: luku-ir
+  name: uh50-ir
   includes:
     - sensorMeterHeating.h
-esp32:
-  board: esp32dev
-  framework:
-    type: arduino
+
+esp8266:
+  board: esp01_1m
 
 # Enable logging
 logger:
+  hardware_uart: UART1
 
 # Enable Home Assistant API
 api:
@@ -28,18 +28,137 @@ wifi:
     password: ""
 
 captive_portal:
-    
+
 sensor:
 - platform: custom
   lambda: |-
     auto my_sensor = new SensorMeterHeating();
     App.register_component(my_sensor);
-    return {my_sensor->sensor_kWh, my_sensor->sensor_m3};
+    return {my_sensor->heat_usage,
+            my_sensor->volume_usage,
+            my_sensor->ownership_number,
+            my_sensor->volume_previous_year,
+            my_sensor->heat_previous_year,
+            my_sensor->error_number,
+            my_sensor->device_number,
+            my_sensor->measurement_period,
+            my_sensor->power_max,
+            my_sensor->power_max_previous_year,
+            my_sensor->flowrate_max,
+            my_sensor->flow_temperature_max,
+            my_sensor->return_temperature_max,
+            my_sensor->operating_hours,
+            my_sensor->fault_hours,
+            my_sensor->fault_hours_previous_year,
+            my_sensor->flowrate_max_previous_year,
+            my_sensor->flow_temperature_max_previous_year,
+            my_sensor->return_temperature_max_previous_year,
+            my_sensor->meter_date_time,
+            my_sensor->measuring_range,
+            my_sensor->flow_hours};
 
   sensors:
-  - name: "Meter Heating MWh"
+  - name: "Heat usage"
+    icon: 'mdi:fire'
+    device_class: 'energy'
+    state_class: 'total_increasing'
+    unit_of_measurement: 'MWh'
+    accuracy_decimals: 3
+  - name: "Volume usage"
+    icon: 'mdi:fire'
+    device_class: 'water'
+    state_class: 'total_increasing'
+    unit_of_measurement: m³
+    accuracy_decimals: 2
+  - name: "Ownership number"
+    icon: 'mdi:identifier'
+    entity_category: 'diagnostic'
+  - name: "Volume previous year"
+    icon: 'mdi:fire'
+    device_class: 'water'
+    unit_of_measurement: m³
+    accuracy_decimals: 2
+    entity_category: 'diagnostic'
+  - name: "Heat previous year"
+    icon: 'mdi:fire'
+    device_class: 'energy'
     unit_of_measurement: MWh
     accuracy_decimals: 3
-  - name: "Meter Heating m3"
-    unit_of_measurement: m3
-    accuracy_decimals: 2
+    entity_category: 'diagnostic'
+  - name: "Error number"
+    icon: 'mdi:home-alert'
+    entity_category: 'diagnostic'
+  - name: "Device number"
+    icon: 'mdi:identifier'
+    entity_category: 'diagnostic'
+  - name: "Measurement period"
+    device_class: 'duration'
+    unit_of_measurement: min
+    entity_category: 'diagnostic'
+  - name: "Power max"
+    device_class: 'power'
+    unit_of_measurement: kW
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Power max previous year"
+    device_class: 'power'
+    unit_of_measurement: kW
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Flow rate max"
+    icon: 'mdi:water-outline'
+    unit_of_measurement: m³ph
+    accuracy_decimals: 3
+    entity_category: 'diagnostic'
+  - name: "Flow temperature max"
+    icon: 'mdi:water-outline'
+    device_class: 'temperature'
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Return temperature max"
+    icon: 'mdi:water-outline'
+    device_class: 'temperature'
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Operating hours"
+    device_class: 'duration'
+    unit_of_measurement: h
+    entity_category: 'diagnostic'
+  - name: "Fault hours"
+    device_class: 'duration'
+    unit_of_measurement: h
+    entity_category: 'diagnostic'
+  - name: "Fault hours previous year"
+    device_class: 'duration'
+    unit_of_measurement: h
+    entity_category: 'diagnostic'
+  - name: "Flow rate max previous year"
+    icon: 'mdi:water-outline'
+    unit_of_measurement: m³ph
+    accuracy_decimals: 3
+    entity_category: 'diagnostic'
+  - name: "Flow temperature max previous year"
+    device_class: 'temperature'
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Return temperature max previous year"
+    device_class: 'temperature'
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Meter date time"
+    icon: 'mdi:clock-outline'
+    device_class: 'timestamp'
+    entity_category: 'diagnostic'
+  - name: "Measuring range"
+    icon: 'mdi:water-outline'
+    unit_of_measurement: m³ph
+    accuracy_decimals: 1
+    entity_category: 'diagnostic'
+  - name: "Flow hours"
+    device_class: 'duration'
+    unit_of_measurement: h
+    entity_category: 'diagnostic'

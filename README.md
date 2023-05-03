@@ -7,14 +7,10 @@
 * sensorMeterHeating.h
 * uh50.yaml
 
-## ESP32
-
-### Pins:
-* RX2 / GPIO16
-* TX2 / GPIO17
+## ESP8266
 
 ## Sensor
 
 Something like this:
 
-https://www.ebay.de/itm/314015465828
+https://www.ebay.com/itm/354359025520
